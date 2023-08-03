@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Solicitud HTTP - Geolocalización</title>
+</head>
+<body>
+  <script>
+    // Lista de direcciones a geolocalizar
+    const direcciones = [
+
+"Av Cra 72 80-94 Local 3-47 CC Titan Plaza Bogota",
+"Calle 185  45-03 CC Santa Fe local 1-105  Bogota ",
+"Calle  164   21 -50 Barrio Toberin Bogotá",
+"Calle  146 A 106 -  20   CC Plaza Imperial Local  1-106  Suba-Bogotá",
+"Calle  146 A 106 -  20   CC Plaza Imperial Local  1-39 Suba- Bogotá",
+"Cra 15 122-29 Bogotá",
+"Calle 140  7c- 65 Barrio Belmira. Bogotá",
+"AVENIDA DE LAS AMERICAS# 62-84 LOCAL 169/170",
+"CARRERA 60 # 12-49",
+"CARRERA 65#11-50 LOCAL 209 ",
+"CARRERA 68 # 75A-50 LOCAL 103",
+"TRANSVERSAL 94# 80D 27",
+"TRANSVERSAL 100A #80A 20 LOCAL 26 ",
+"AV CARRERA 68#98-68 LOCAL 2019",
+"CALLE 19 #69B-07 ",
+"CARRERA 60#24-09 LOCAL 222 COSTADO ESFERA ",
+"AV CALLE 72# 69G-31 BARRIO LA ESTRADA",
+"Calle 98A  68D-24 Local 4 Bogota -Floresta",
+"CALLE 19A 72-57 LOCAL B155",
+"CARRERA  68B #24-39 LOCAL 141 ",
+"AV CARRERA 72 #12 B 60 LOCAL 1-120",
+"CARRERA 100# 20C-37 ",
+"Cra 3 No 15 a 57 CC Ecoplaza loc 157 Mosquera.",
+"Calle 24c Sur 48-94 loc 1006 al 1010 CC Ciudad Tunal",
+"Calle 18 sur No 20-46 Restrepo",
+"Cra 7ma N0o 30b 139 Loc 148 CC Gran Plaza Soacha ",
+"Av Cll 19 No 28-80 Loc B39-B40 CC Comercial Mall Plaza",
+"Calle 72 No 13-61",
+"Av CVR CL 19 Y 19B L172-175 CC Centr Mayor",
+"Cra 71 d N0 6-94 sur Local 1217 CC Plaza De Las Americas",
+"Cra 7a No 18-38 Loc 117 CC Monserrate",
+"Cll 51 sur No 59-21 Loc 165 CC Gran plaza el ensueño.",
+"Cra 78 b No 35 a 50 Sur Kennedy ",
+"Diagonal 57 c sur N0 60-62 Loc 123 CC Paseo Villa Del rio",
+"Av cra 86 No. 55 A 75 local L 1-239",
+"Cra 13 No 44-18 Chapinero",
+"CARRERA 33 #25B-23"
+    ];
+
+    // Clave de API de Google Maps
+    const apiKey = "AIzaSyBTZgi5ubpI1Ao0e1_bZLOOqBVqkRaxwPk";
+
+    function obtenerGeolocalizacion(direccion) {
+      const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(direccion)}&key=${apiKey}`;
+
+      // Crea un nuevo objeto XMLHttpRequest
+      const xhttp = new XMLHttpRequest();
+
+      // Define la función que se ejecutará cuando la solicitud esté completa
+      xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+          const data = JSON.parse(this.responseText);
+          if (data.status === "OK" && data.results.length > 0) {
+            const resultado = data.results[0];
+            const location = resultado.geometry.location;
+            console.log(`Dirección: ${direccion}`);
+            console.log("Latitud:", location.lat);
+            console.log("Longitud:", location.lng);
+          } else {
+            console.log(`No se encontró la dirección: ${direccion}`);
+          }
+        }
+      };
+
+      // Abre la solicitud HTTP GET a la dirección apiUrl
+      xhttp.open("GET", apiUrl, true);
+
+      // Envía la solicitud
+      xhttp.send();
+    }
+
+    // Iterar sobre la lista de direcciones y obtener la geolocalización de cada una
+    direcciones.forEach(obtenerGeolocalizacion);
+  </script>
+</body>
+</html>
